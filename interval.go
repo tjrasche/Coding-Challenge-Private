@@ -1,18 +1,25 @@
 package main
 
+import "strconv"
+
 // Interval is used to represent an interval of integers
 type Interval struct {
 	LowerBound int
 	UpperBound int
 }
 
-// NewInterval basic for an interval
+// NewInterval basic constructor for an interval
 func NewInterval(lowerBound int, upperBound int) *Interval {
 	// handle possible invalid input
 	if !(lowerBound <= upperBound) {
 		panic("lowerBound must be smaller or equal to upperbound!")
 	}
 	return &Interval{LowerBound: lowerBound, UpperBound: upperBound}
+}
+
+// custom string serialization for easier debugging
+func (i Interval) String() string {
+	return strconv.Itoa(i.LowerBound) + "-" + strconv.Itoa(i.UpperBound)
 }
 
 // we implement the [sort.Interface] here for Interval[]
