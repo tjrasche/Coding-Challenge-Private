@@ -17,7 +17,7 @@ func NewInterval(lowerBound int, upperBound int) *Interval {
 
 // we implement the [sort.Interface] here for Interval[]
 
-type ByLowerBound []Interval
+type ByLowerBound []*Interval
 
 // Len return the length of the slice to be sorted
 func (is ByLowerBound) Len() int {
