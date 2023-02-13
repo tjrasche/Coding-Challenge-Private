@@ -13,6 +13,7 @@ func Merge(intervals ByLowerBound) []*Interval {
 
 	for _, unmergedInterval := range intervals {
 
+		// change < to <= if you want to consider two intervals x,y to be overlapping if x.UpperBound = y.LowerBound
 		if unmergedInterval.LowerBound < intervals[mergeTargetIndex].UpperBound {
 			// the following interval is overlapping with the current mergetarget
 			// we have to enlarge the mergeTarget interval,

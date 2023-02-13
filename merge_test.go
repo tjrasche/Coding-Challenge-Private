@@ -26,9 +26,46 @@ func TestMergeExample(t *testing.T) {
 	}
 }
 
+// Test if ranges of negative integers are merged correctly
 func TestMergeNegativeNumbers(t *testing.T) {
 	intervals := []*Interval{NewInterval(-100, -20), NewInterval(-50, -5), NewInterval(0, 20)}
 	mergedIntervalsExpectedResult := []*Interval{NewInterval(-100, -5), NewInterval(0, 20)}
+	mergedIntervals := Merge(intervals)
+
+	// check if results from Merge() are equivalent to expected case
+	if len(mergedIntervals) != len(mergedIntervalsExpectedResult) {
+		t.Errorf("Expected lengths of result to be equal")
+	}
+
+	for i, interval := range mergedIntervalsExpectedResult {
+		if !(*interval == *mergedIntervals[i]) {
+			t.Errorf("Expected Values to be equivalent and in order! Expected value: %s, value reveived: %s", *interval, *mergedIntervals[i])
+		}
+	}
+}
+
+// Test if intervals ranging from negative to positive integers are merged correctly
+func TestMergeNegativeAndPositiveNumbers(t *testing.T) {
+	intervals := []*Interval{NewInterval(-100, -20), NewInterval(-50, -5), NewInterval(-6, 1), NewInterval(2, 5)}
+	mergedIntervalsExpectedResult := []*Interval{NewInterval(-100, 1), NewInterval(2, 5)}
+	mergedIntervals := Merge(intervals)
+
+	// check if results from Merge() are equivalent to expected case
+	if len(mergedIntervals) != len(mergedIntervalsExpectedResult) {
+		t.Errorf("Expected lengths of result to be equal")
+	}
+
+	for i, interval := range mergedIntervalsExpectedResult {
+		if !(*interval == *mergedIntervals[i]) {
+			t.Errorf("Expected Values to be equivalent and in order! Expected value: %s, value reveived: %s", *interval, *mergedIntervals[i])
+		}
+	}
+}
+
+// Test if intervals with same start and end number are considered equal intervals
+func TestMergeWithSameUpperLowerBound(t *testing.T) {
+	intervals := []*Interval{NewInterval(-100, -20), NewInterval(-20, -5)}
+	mergedIntervalsExpectedResult := []*Interval{NewInterval(-100, -20), NewInterval(-20, -5)}
 	mergedIntervals := Merge(intervals)
 
 	// check if results from Merge() are equivalent to expected case

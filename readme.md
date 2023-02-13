@@ -43,3 +43,10 @@ The algorithms auxiliary space complexity is currently O(1).
 # Known limitations
 The program can currently only handle integers.
 The program is limited to input sizes that can be handled in memory.
+
+# Assumptions taken
+Intervals that share the same upper and lower bound are *not* considered as overlapping.
+
+i.e. 25-30 and 30-35 will not be merged.
+
+This can simply be changed by changing the implementation of Merge() in merge.go in line 17 as documented.
