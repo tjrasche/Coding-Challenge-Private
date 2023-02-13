@@ -21,8 +21,6 @@ func TestMergeExample(t *testing.T) {
 	}
 
 	for i, interval := range mergedIntervalsExpectedResult {
-		t.Log(*interval)
-		t.Log(*mergedIntervals[i])
 		if !(*interval == *mergedIntervals[i]) {
 			t.Errorf("Expected Values to be equivalent and in order! Expected value: %s, value reveived: %s", *interval, *mergedIntervals[i])
 		}

@@ -7,30 +7,25 @@ func Merge(intervals ByLowerBound) []*Interval {
 	// first we have to sort all intervals. this is done using the [sort.Sort] method provided by go.
 	// sort.Sort uses the methods defined for [ByLowerBound] and described by the [sort.Intercace] to sort the values in an ascending matter
 	sort.Sort(intervals)
-	// used for storing the current interval being built
-	var currentInterval = Interval{}
-	var mergedIntervals []*Interval
 
-	for i, unmergedInterval := range intervals {
+	// used for storing the value of the latest "mergetarget" for all intervals
+	mergeTargetIndex := 0
 
-		if i == 0 {
-			// we are at the start of the for loop so we have to set the first upper and lower bound and can move on
-			currentInterval = *NewInterval(unmergedInterval.LowerBound, unmergedInterval.UpperBound)
-			continue
-		}
-		if unmergedInterval.LowerBound < currentInterval.UpperBound {
-			// the following interval is overlapping with the previous one, so we have to enlargen our currentInterval, if the upperBound of the interval is larger than the currentinterval
-			if unmergedInterval.UpperBound > currentInterval.UpperBound {
-				currentInterval.UpperBound = unmergedInterval.UpperBound
+	for _, unmergedInterval := range intervals {
+
+		if unmergedInterval.LowerBound < intervals[mergeTargetIndex].UpperBound {
+			// the following interval is overlapping with the current mergetarget
+			// we have to enlarge the mergeTarget interval,
+			// if the upperBound of the unmergedInterval is larger than the upperbound of the current mergeTarget
+			if unmergedInterval.UpperBound > intervals[mergeTargetIndex].UpperBound {
+				intervals[mergeTargetIndex].UpperBound = unmergedInterval.UpperBound
 			}
 		} else {
-			// we don't have any overlap more. so the currentInterval can be considered "done" and appendend to the resultSLice
-			mergedIntervals = append(mergedIntervals, NewInterval(currentInterval.LowerBound, currentInterval.UpperBound))
-			// as we are a starting a new currentInterval, we have to set it's
-			currentInterval = *NewInterval(unmergedInterval.LowerBound, unmergedInterval.UpperBound)
+			// we don't have any overlap more. so the currentInterval can be considered "done" and we can step up the mergeTargetIndex
+			// and set the value at the new mergeTargetIndex to the current interval as starting point
+			mergeTargetIndex++
+			intervals[mergeTargetIndex] = unmergedInterval
 		}
 	}
-	// we still have to add the last interval
-	mergedIntervals = append(mergedIntervals, NewInterval(currentInterval.LowerBound, currentInterval.UpperBound))
-	return mergedIntervals
+	return intervals[:mergeTargetIndex+1]
 }
