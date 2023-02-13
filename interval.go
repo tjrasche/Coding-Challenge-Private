@@ -1,6 +1,9 @@
 package main
 
-import "strconv"
+import (
+	"log"
+	"strconv"
+)
 
 // Interval is used to represent an interval of integers
 type Interval struct {
@@ -12,7 +15,7 @@ type Interval struct {
 func NewInterval(lowerBound int, upperBound int) *Interval {
 	// handle possible invalid input
 	if !(lowerBound <= upperBound) {
-		panic("lowerBound must be smaller or equal to upperbound!")
+		log.Fatalf("lowerBound must be smaller or equal to upperbound!")
 	}
 	return &Interval{LowerBound: lowerBound, UpperBound: upperBound}
 }
