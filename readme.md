@@ -21,9 +21,13 @@ go run main.go "input string"
 
 ## Inputting range values
 
-The program expects exactly one argument, a string representing all intervals that shall be merged.
+The program accepts two type of inputs:
 
-A single interval is written as teh lower and upper bound seperated by a comma.
+1. direct command line input using the `-c` flag
+2. a filepath to a file containing a list of intervals
+
+### Inputting vie command line
+When inputting vie command line, a  single interval is written as the lower and upper bound seperated by a comma.
 Multiple intervals may be seperated by a semicolon.
 
 So to input the example values given in the coding task would be formatted as follows:
@@ -32,7 +36,36 @@ So to input the example values given in the coding task would be formatted as fo
 "25,30;2,19;14,23;4,8"
 ```
 
-# Considerations regarding the Runtime and Memory 
+This string must be used as the value for the -c flag.
+
+Example:
+
+```bash
+./merge  -c "25,30;2,19;14,23;4,8"
+```
+or 
+```bash
+go run . -c "25,30;2,19;14,23;4,8"
+```
+
+### Inputting via file
+To use a file as input for the merging simple use the -f followed by a file path.
+
+The file must contain one interval per line.
+
+A single interval is written as the lower and upper bound seperated by a comma.
+
+An example file can be found at `examplevals`.
+
+Example:
+```bash
+./merge  -f examplevals
+```
+or 
+```bash
+go run . -f examplevals
+```
+## Considerations regarding the Runtime and Memory complexity
 The algorithms runtime has an average time complexity of O(n*logn). 
 This stems from the following considerations:
     Complexity of sorting: O(n*logn)
@@ -40,11 +73,11 @@ This stems from the following considerations:
 
 The algorithms auxiliary space complexity is currently O(1).
 
-# Known limitations
+## Known limitations
 The program can currently only handle integers.
 The program is limited to input sizes that can be handled in memory.
 
-# Assumptions taken
+## Assumptions taken
 Intervals that share the same upper and lower bound are *not* considered as overlapping.
 
 i.e. 25-30 and 30-35 will not be merged.
