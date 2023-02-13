@@ -29,35 +29,46 @@ func TestMergeExample(t *testing.T) {
 	}
 }
 
-// Test to measure performance of the sorting. Consecetuvely merges larger and larger values and measures the time they take.
+// Test to measure performance of the sorting. Consecutively merges larger and larger values and measures the time they take.
 // this is done, so a tester can roughly evaluate the growth rate of the execution time of the merge algorithm.
 func TestPerformance(t *testing.T) {
 	// slowly let the result size grow
 	interValCounts := []int{10, 100, 1000, 10_000, 100_000, 1_000_000}
-	var results []time.Duration
-	for _, interValCount := range interValCounts {
-		results = append(results, timedMergeWithRandomIntervals(t, interValCount))
-	}
-	var execTimeQuotients []float64
-	for i, duration := range results {
-		execTimeQuotients = append(execTimeQuotients, float64(duration.Nanoseconds())/float64(interValCounts[i]))
-
-		// we expect a runtime behaviour of O(n*log(n)), so we can fail if the time per interval does not drop with bigger intervals
-		if i != 0 && (execTimeQuotients[i-1] < execTimeQuotients[i]) {
-			t.Errorf("Runtime scaling worse than linear")
+	// how many times shall the merging be done per interValCount?
+	numberOfRepetitions := 50
+	var results []float64
+	for i, interValCount := range interValCounts {
+		var resultSum float64
+		// make the same call multiple times to get a realistic estimation of runtime (sorting runtime is dependent on input ordering, which is random)
+		for j := 1; j < numberOfRepetitions; j++ {
+			resultSum = resultSum + float64(timedMergeWithRandomIntervals(interValCount).Nanoseconds())/float64(interValCount)
 		}
+
+		// get average execution time per interval and add it to the list of results
+		avgRuntimePerInterval := resultSum / float64(numberOfRepetitions)
+		t.Logf("Average Runtime per Interval: %f", avgRuntimePerInterval)
+
+		// expect runtime performance to increase less than quadratic (rough estimation, our algorithm should perform slightly worse than linear (O(n*log n)
+		if i != 0 {
+			if results[i-1]*2 <= avgRuntimePerInterval {
+				t.Errorf("Runtime Performance declines to fast! ")
+			}
+		}
+
+		results = append(results, avgRuntimePerInterval)
+
 	}
+
 }
 
 // generates n random intervals and merges them. Returns the execution time of the merge itself.
-func timedMergeWithRandomIntervals(t *testing.T, n int) (execTime time.Duration) {
+func timedMergeWithRandomIntervals(n int) (execTime time.Duration) {
 	// generate a very large slice of intervals
 	rand.Seed(time.Now().UnixNano())
 
-	const intervalsCount = 10_000_000
 	var intervals []*Interval
 
-	for i := 0; i < intervalsCount; i++ {
+	for i := 0; i < n; i++ {
 		lowerBound := rand.Intn(100000)
 		upperBound := lowerBound + rand.Intn(100000)
 		intervals = append(intervals, NewInterval(lowerBound, upperBound))
