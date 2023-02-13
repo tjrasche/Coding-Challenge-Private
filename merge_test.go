@@ -115,7 +115,6 @@ func TestPerformance(t *testing.T) {
 // generates n random intervals and merges them. Returns the execution time of the merge itself.
 func timedMergeWithRandomIntervals(n int) (execTime time.Duration) {
 	// generate a very large slice of intervals
-	rand.Seed(time.Now().UnixNano())
 
 	var intervals []*Interval
 
@@ -128,5 +127,5 @@ func timedMergeWithRandomIntervals(n int) (execTime time.Duration) {
 	// only measure the time the actual merging takes. Not the random generation of intervals
 	startTime := time.Now()
 	Merge(intervals)
-	return time.Now().Sub(startTime)
+	return time.Since(startTime)
 }

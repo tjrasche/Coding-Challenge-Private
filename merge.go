@@ -5,17 +5,17 @@ import "sort"
 // Merge merges all [Interval] together when they have overlapping values, returns values sorted by LowerBound of the Intervals
 func Merge(intervals ByLowerBound) []*Interval {
 	// first we have to sort all intervals. this is done using the [sort.Sort] method provided by go.
-	// sort.Sort uses the methods defined for [ByLowerBound] and described by the [sort.Intercace] to sort the values in an ascending matter
+	// sort.Sort uses the methods defined for [ByLowerBound] and described by the [sort.Interface] to sort the values in an ascending matter
 	sort.Sort(intervals)
 
-	// used for storing the value of the latest "mergetarget" for all intervals
+	// used for storing the value of the latest "mergeTarget" for all intervals
 	mergeTargetIndex := 0
 
 	for _, unmergedInterval := range intervals {
 
 		// change < to <= if you want to consider two intervals x,y to be overlapping if x.UpperBound = y.LowerBound
 		if unmergedInterval.LowerBound < intervals[mergeTargetIndex].UpperBound {
-			// the following interval is overlapping with the current mergetarget
+			// the following interval is overlapping with the current mergeTarget
 			// we have to enlarge the mergeTarget interval,
 			// if the upperBound of the unmergedInterval is larger than the upperbound of the current mergeTarget
 			if unmergedInterval.UpperBound > intervals[mergeTargetIndex].UpperBound {
