@@ -38,10 +38,7 @@ This stems from the following considerations:
     Complexity of sorting: O(n*logn)
     Complexity of merging for loop: O(n)
 
-The algorithms auxiliary space complexity is currently O(n),
-as the algorithm is writing the merged values into a new slice.
-
-This could be omitted by making the algorithm in place.
+The algorithms auxiliary space complexity is currently O(1).
 
 # Known limitations
 The program can currently only handle integers.
