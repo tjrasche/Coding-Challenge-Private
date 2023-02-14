@@ -83,3 +83,7 @@ Intervals that share the same upper and lower bound are *not* considered as over
 i.e. 25-30 and 30-35 will not be merged.
 
 This can simply be changed by changing the implementation of Merge() in merge.go in line 17 as documented.
+
+## Time spent
+Time to first implementation: ~2h
+Time spent altogether: ~6h
