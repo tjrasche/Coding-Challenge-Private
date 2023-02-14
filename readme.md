@@ -11,12 +11,12 @@ in the git root directory.
 
 Then run the program with 
 ```bash
-./merge "input string"
+./merge -c "input string"
 ```
 You may also directly run the program with 
 
 ```bash
-go run main.go "input string"
+go run main.go -c "input string"
 ```
 
 ## Inputting range values
@@ -24,13 +24,13 @@ go run main.go "input string"
 The program accepts two type of inputs:
 
 1. direct command line input using the `-c` flag
-2. a filepath to a file containing a list of intervals
+2. a filepath to a file containing a list of intervals with the `-f` flag
 
 ### Inputting vie command line
-When inputting vie command line, a  single interval is written as the lower and upper bound seperated by a comma.
+When inputting via command line, a  single interval is written as the lower and upper bound seperated by a comma.
 Multiple intervals may be seperated by a semicolon.
 
-So to input the example values given in the coding task would be formatted as follows:
+So to input the example values given in the coding task the string would be formatted as follows:
 
 ```
 "25,30;2,19;14,23;4,8"
@@ -49,7 +49,7 @@ go run . -c "25,30;2,19;14,23;4,8"
 ```
 
 ### Inputting via file
-To use a file as input for the merging simple use the -f followed by a file path.
+To use a file as input for the merging simply use the -f flag followed by a file path.
 
 The file must contain one interval per line.
 
@@ -71,7 +71,7 @@ This stems from the following considerations:
     Complexity of sorting: O(n*logn)
     Complexity of merging for loop: O(n)
 
-The algorithms auxiliary space complexity is currently O(1).
+The algorithms auxiliary space complexity is O(1).
 
 ## Known limitations
 The program can currently only handle integers.
